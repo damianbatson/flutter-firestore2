@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prototypedeus/auth.dart';
-import 'package:prototypedeus/auth_provider.dart';
+import 'package:prototypedeus/views/auth.dart';
+import 'package:prototypedeus/views/provider.dart';
 
 class EmailFieldValidator {
   static String validate(String value) {
@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> validateAndSubmit() async {
     if (validateAndSave()) {
       try {
-        final BaseAuth auth = AuthProvider.of(context).auth;
+        final AuthService auth = Provider.of(context).auth;
         if (_formType == FormType.login) {
           final String userId = await auth.signInWithEmailAndPassword(_email, _password);
           print('Signed in: $userId');

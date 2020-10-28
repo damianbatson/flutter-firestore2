@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:prototypedeus/auth.dart';
-import 'package:prototypedeus/auth_provider.dart';
-import 'package:prototypedeus/detail.dart';
+import 'package:prototypedeus/views/auth.dart';
+import 'package:prototypedeus/views/provider.dart';
+import 'package:prototypedeus/views/detail.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key, this.title, this.uid}) : super(key: key);
@@ -12,15 +12,6 @@ class HomePage extends StatefulWidget {
 
   @override
   _HomePageState createState() => _HomePageState();
-}
-
-Future<void> _signOut(BuildContext context) async {
-  try {
-    final BaseAuth auth = AuthProvider.of(context).auth;
-    await auth.signOut();
-  } catch (e) {
-    print(e);
-  }
 }
 
 class _HomePageState extends State<HomePage> {
@@ -39,17 +30,18 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+  Future<void> _signOut(BuildContext context) async {
+    try {
+      final AuthService auth = Provider.of(context).auth;
+      await auth.signOut();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<void> getCurrentUser() async {
     // final BaseAuth auth = AuthProvider.of(context).auth;
     // await auth.currentUser();
-    currentUser = await FirebaseAuth.instance.currentUser();
-    setState(() {
-      this.uid = currentUser.uid;
-    });
-  }
-
-  Future<void> setUser() async {
-    this.uid = "";
     currentUser = await FirebaseAuth.instance.currentUser();
     setState(() {
       this.uid = currentUser.uid;
@@ -70,9 +62,14 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: StreamBuilder<QuerySnapshot>(
-        // future: FirebaseAuth.instance.currentUser(),
-        stream: Firestore.instance            .collection('items')            .document(this.uid)            .collection('items')            .snapshots(),
+        // final uid = await AuthProvider.of(context).auth.getCurrentUID();
+        stream: Firestore.instance
+            .collection('items')
+            .document(this.uid)
+            .collection('items')
+            .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) return const Text("Loading...");
           return new ListView.builder(
               itemCount: snapshot.data.documents.length,
               padding: const EdgeInsets.only(top: 10.0, bottom: 0.0),

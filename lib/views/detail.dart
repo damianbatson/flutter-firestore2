@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 
 class Detail extends StatefulWidget {
 
@@ -30,7 +30,7 @@ class _DetailState extends State<Detail> {
       ),
       body: Container(
         // future: FirebaseAuth.instance.currentUser(),
-        // stream: Firestore.instance            .collection('items')            .document(this.uid)                   .snapshots(),
+        // stream: Firestore.instance.collection('items').document(this.uid).snapshots(),
         // builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           //  new ListView.builder(
               // itemCount: snapshot.data.documents.length,

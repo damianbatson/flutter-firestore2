@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:prototypedeus/auth.dart';
+import 'package:prototypedeus/views/auth.dart';
 
 class Provider extends InheritedWidget {
   const Provider({Key key, Widget child, this.auth}) : super(key: key, child: child);
